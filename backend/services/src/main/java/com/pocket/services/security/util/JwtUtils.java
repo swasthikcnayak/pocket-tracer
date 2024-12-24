@@ -1,6 +1,8 @@
 package com.pocket.services.security.util;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -36,12 +38,12 @@ public class JwtUtils {
     }
 
     public LoginUserResponseDto generateToken(String email) {
-        Date currentDate = new Date();
-        Date expiry = new Date((currentDate.getTime() + jwtExpirationMs));
+        Instant now = Instant.now();
+        Instant expiry = now.plus(jwtExpirationMs, ChronoUnit.MILLIS);
         String jwtString = Jwts.builder()
                 .subject(email)
-                .issuedAt(currentDate)
-                .expiration(expiry)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiry))
                 .signWith(key())
                 .compact();
         return LoginUserResponseDto.builder().userName(email).expiry(expiry).token(jwtString).build();

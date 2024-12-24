@@ -10,7 +10,5 @@ import com.pocket.services.user.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
-
     Optional<UserInfo> findUserInfoByEmail(String email);
 }

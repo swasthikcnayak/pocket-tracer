@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.GenerationType;
 
@@ -19,6 +20,7 @@ import jakarta.persistence.GenerationType;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity(name = "users")
 public class User implements UserDetails{
     
@@ -34,6 +36,10 @@ public class User implements UserDetails{
     
     @Column(name = "role", nullable = false)
     private Role role = Role.ROLE_USER;
+
+    public User(Long id){
+        this.id = id;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

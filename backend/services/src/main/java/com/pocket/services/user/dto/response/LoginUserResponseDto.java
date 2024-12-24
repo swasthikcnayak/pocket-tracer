@@ -1,6 +1,6 @@
 package com.pocket.services.user.dto.response;
 
-import java.util.Date;
+import java.time.Instant;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +14,5 @@ import lombok.Setter;
 public class LoginUserResponseDto {
     String userName;
     String token;
-    Date expiry;
+    Instant expiry;
 }
