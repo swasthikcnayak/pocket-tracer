@@ -1,5 +1,7 @@
 ## Database Design
 
+##### Date : 23/12/2024
+
 ### Choosing the database : 
 
 Using MySQL db : Because our data has a fixed structure. Working with structured data. And has relationships.
