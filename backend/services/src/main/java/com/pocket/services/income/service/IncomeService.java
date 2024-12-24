@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.pocket.services.income.dto.mapper.IncomeMapper;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.dto.response.IncomeDtoResponse;
+import com.pocket.services.income.dto.response.IncomeSuccessReponse;
 import com.pocket.services.income.model.Income;
 import com.pocket.services.income.repository.IncomeRepository;
 import com.pocket.services.security.dto.UserInfo;
-import com.pocket.services.user.dto.response.RegisterUserResponseDto;
 import com.pocket.services.user.model.User;
 
 @Service
@@ -31,7 +31,7 @@ public class IncomeService {
         income.setUser(new User(userInfo.getId()));
         incomeRepository.save(income);
         return ResponseEntity.ok()
-                .body(new RegisterUserResponseDto(HttpStatus.CREATED.value(), "Income added successfully"));
+                .body(new IncomeSuccessReponse(HttpStatus.CREATED.value(), "Income added successfully"));
     }
 
     public ResponseEntity<?> updateIncome(Long id, IncomeDto incomeDto, UserInfo userInfo) {
@@ -44,7 +44,7 @@ public class IncomeService {
         existingIncome.setDescription(incomeDto.getDescription());
         incomeRepository.save(existingIncome);
         return ResponseEntity.ok()
-                .body(new RegisterUserResponseDto(HttpStatus.CREATED.value(), "Income updated successfully"));
+                .body(new IncomeSuccessReponse(HttpStatus.CREATED.value(), "Income updated successfully"));
     }
 
     public ResponseEntity<?> getIncome(UserInfo userInfo, Pageable pageable) {

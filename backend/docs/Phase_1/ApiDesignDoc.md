@@ -15,15 +15,6 @@
     get all the income
     can update previous income
     can get previous income
-- #### Budget API
-    - ##### post : v1/budget/
-    - ##### get : v1/budget/?page=1&size=10
-    - ##### patch : v1/budget/
-    - ##### get : v1/budget/{mm-yyyy}
-    Cannot update the older budget: can update only the ongoing budget
-    Get all the budgets
-    Can get any months budget
-    Can create only current months budget
 - #### Expense API
     - ##### post : /v1/expense
     - ##### get : /v1/ expense/?page=1&size=10
@@ -33,5 +24,13 @@
     can get all the expense
     Can update the the expense by the id
     can get the details of the expense by it's id
-
+- #### Budget API
+    - ##### post : v1/budget/
+    - ##### get : v1/budget/?page=1&size=10
+    - ##### patch : v1/budget/
+    - ##### get : v1/budget/{mm-yyyy}
+    Cannot update the older budget: can update only the ongoing budget
+    Get all the budgets
+    Can get any months budget
+    Can create only current months budget
    
