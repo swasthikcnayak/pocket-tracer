@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.pocket.services.security.dto.UserInfo;
+import com.pocket.services.security.util.JwtUtils;
 import com.pocket.services.user.dto.request.LoginUserDto;
 import com.pocket.services.user.dto.request.RegisterUserDto;
 import com.pocket.services.user.dto.response.LoginUserResponseDto;
@@ -18,7 +20,6 @@ import com.pocket.services.user.dto.response.RegisterUserResponseDto;
 import com.pocket.services.user.mapper.UserMapper;
 import com.pocket.services.user.model.User;
 import com.pocket.services.user.repository.UserRepository;
-import com.pocket.services.user.security.util.JwtUtils;
 
 @Service
 public class UserService {
@@ -60,7 +61,7 @@ public class UserService {
             return ResponseEntity.badRequest().body("Invalid");
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = (User) authentication.getPrincipal();
+        UserInfo user = (UserInfo) authentication.getPrincipal();
         LoginUserResponseDto response = jwtUtils.generateToken(user.getUsername());
         return ResponseEntity.ok().body(response);
     }

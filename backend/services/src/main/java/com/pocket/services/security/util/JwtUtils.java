@@ -1,4 +1,4 @@
-package com.pocket.services.user.security.util;
+package com.pocket.services.security.util;
 
 import java.security.Key;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.pocket.services.user.security;
+package com.pocket.services.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

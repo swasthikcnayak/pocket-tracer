@@ -1,4 +1,4 @@
-package com.pocket.services.user.service;
+package com.pocket.services.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
+        return userRepository.findUserInfoByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", email)));
     }
 }
