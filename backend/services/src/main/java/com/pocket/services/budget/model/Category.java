@@ -1,4 +1,4 @@
-package com.pocket.services.expense.model;
+package com.pocket.services.budget.model;
 
 public enum Category {
     RENT,

@@ -11,7 +11,6 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 @Data
-
 public class ExpenseDto {
 
     @NotNull(message = "Amount cannot be null")
