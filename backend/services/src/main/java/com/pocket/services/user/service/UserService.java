@@ -1,8 +1,12 @@
 package com.pocket.services.user.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,12 +21,16 @@ import com.pocket.services.user.dto.mapper.UserMapper;
 import com.pocket.services.user.dto.request.LoginUserDto;
 import com.pocket.services.user.dto.request.RegisterUserDto;
 import com.pocket.services.user.dto.response.LoginUserResponseDto;
-import com.pocket.services.user.dto.response.RegisterUserResponseDto;
+import com.pocket.services.user.exceptions.ErrorCode;
+import com.pocket.services.user.exceptions.UnhandledException;
+import com.pocket.services.user.exceptions.UserServiceException;
 import com.pocket.services.user.model.User;
 import com.pocket.services.user.repository.UserRepository;
 
 @Service
 public class UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -44,10 +52,15 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             userRepository.save(user);
-            return ResponseEntity.ok()
-                    .body(new RegisterUserResponseDto(HttpStatus.CREATED.value(), "User created successfully"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Invalid");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Success");
+        } catch (DataIntegrityViolationException ex) {
+            throw new UserServiceException(ErrorCode.USER_CONSTRAINS_DOES_NOT_MATCH, "User Already exist");
+        } catch(JpaSystemException ex) {
+            throw new UserServiceException(ErrorCode.USER_ALREADY_EXIST, "User Already exist");
+        }
+        catch (Exception e) {
+            logger.error("Exception in register User", e);
+            throw new UnhandledException(ErrorCode.USER_CREATION_EXCEPTION, e.getMessage());
         }
     }
 
@@ -58,7 +71,8 @@ public class UserService {
                     .authenticate(
                             new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
         } catch (AuthenticationException exception) {
-            return ResponseEntity.badRequest().body("Invalid");
+            logger.error("Authentication exception in login User", exception);
+            throw new UserServiceException(ErrorCode.USER_LOGIN_EXCEPTION, "Bad Credentials", HttpStatus.UNAUTHORIZED);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserInfo user = (UserInfo) authentication.getPrincipal();

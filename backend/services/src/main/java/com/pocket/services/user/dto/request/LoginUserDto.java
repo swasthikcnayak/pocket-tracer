@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class LoginUserDto {
     
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "email cannot be null")
     String email;
 
-    @NotNull(message = "Password cannot be null")
+    @NotNull(message = "password cannot be null")
     String password;
 }

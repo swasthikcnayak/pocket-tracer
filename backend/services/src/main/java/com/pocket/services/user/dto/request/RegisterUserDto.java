@@ -9,12 +9,12 @@ import lombok.Data;
 @Data
 public class RegisterUserDto {
 
-    @NotNull(message = "Email cannot be null")
-    @Email(message = "Invalid email format")
+    @NotNull(message = "email cannot be null")
+    @Email(message = "email format is invalid")
     String email;
 
-    @NotNull(message = "Password cannot be null")
-    @NotEmpty(message = "Password cannot be empty")
-    @Size(min = 6, max = 10, message = "Password must be between 6 and 10 characters")
+    @NotNull(message = "password cannot be null")
+    @NotEmpty(message = "password cannot be empty")
+    @Size(min = 6, message = "password must be between atleast 6 characters")
     String password;
 }
