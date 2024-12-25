@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pocket.services.expense.dto.mapper.ExpenseMapper;
@@ -34,9 +33,9 @@ public class ExpenseService {
                 .body(new ExpenseSuccessReponse(HttpStatus.CREATED.value(), "Expense added successfully"));
     }
 
-    public ResponseEntity<?> updateExpense(Long id, ExpenseDto expenseDto, UserInfo userInfo) {
+    public ResponseEntity<?> updateExpense(Long id, ExpenseDto expenseDto, UserInfo userInfo) throws Exception {
         Expense existingExpense = expenseRepository.findByIdAndUser(id, new User(userInfo.getId()))
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("EXPENSE_NOT_FOUND")));
+                .orElseThrow(() -> new Exception(String.format("EXPENSE_NOT_FOUND")));
         existingExpense.setAmount(expenseDto.getAmount());
         existingExpense.setCategory(expenseDto.getCategory());
         existingExpense.setDate(expenseDto.getDate());

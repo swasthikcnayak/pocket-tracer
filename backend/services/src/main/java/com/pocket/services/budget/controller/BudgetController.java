@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +32,7 @@ public class BudgetController {
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBudget(@RequestParam(defaultValue = "1") int month,
-            @RequestParam(defaultValue = "2020") int year, @AuthenticationPrincipal UserInfo userInfo) {
+            @RequestParam(defaultValue = "2020") int year, @AuthenticationPrincipal UserInfo userInfo) throws Exception {
         return budgetService.getBudget(userInfo, month, year);
     }
 }

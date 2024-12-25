@@ -43,7 +43,7 @@ public class IncomeController {
 
     @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIncome(@PathVariable Long id, @Valid @RequestBody IncomeDto incomeDto,
-            @AuthenticationPrincipal UserInfo userInfo) {
+            @AuthenticationPrincipal UserInfo userInfo) throws Exception {
         return incomeService.updateIncome(id, incomeDto, userInfo);
     }
 }

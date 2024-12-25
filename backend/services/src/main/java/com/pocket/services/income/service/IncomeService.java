@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pocket.services.income.dto.mapper.IncomeMapper;
@@ -34,9 +33,9 @@ public class IncomeService {
                 .body(new IncomeSuccessReponse(HttpStatus.CREATED.value(), "Income added successfully"));
     }
 
-    public ResponseEntity<?> updateIncome(Long id, IncomeDto incomeDto, UserInfo userInfo) {
+    public ResponseEntity<?> updateIncome(Long id, IncomeDto incomeDto, UserInfo userInfo) throws Exception {
         Income existingIncome = incomeRepository.findByIdAndUser(id, new User(userInfo.getId()))
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("INCOME_NOT_FOUND")));
+                .orElseThrow(() -> new Exception(String.format("INCOME_NOT_FOUND")));
         existingIncome.setAmount(incomeDto.getAmount());
         existingIncome.setCategory(incomeDto.getCategory());
         existingIncome.setDate(incomeDto.getDate());
