@@ -17,7 +17,7 @@ public class ExpenseServiceExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(ExpenseServiceExceptionHandler.class);
 
     @ExceptionHandler(ExpenseServiceException.class)
-    public ResponseEntity<Map<String, String>> handleUserServiceException(ExpenseServiceException ex) {
+    public ResponseEntity<Map<String, String>> handleExpenseServiceException(ExpenseServiceException ex) {
         logger.error("expense service exception "+ex.errorCode, ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());

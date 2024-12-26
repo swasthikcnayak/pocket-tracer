@@ -19,6 +19,8 @@ import com.pocket.services.income.service.IncomeService;
 import com.pocket.services.income.utils.PageUtils;
 
 import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -36,16 +38,27 @@ public class IncomeController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIncome(@RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "10") int size, 
-    @RequestParam(defaultValue = "date") String sort,
-    @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
-        Pageable pageable = PageUtils.buildPageable(Math.max(0,page-1), size, sort, order);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "date") String sort,
+            @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
+        Pageable pageable = PageUtils.buildPageable(Math.max(0, page - 1), size, sort, order);
         return incomeService.getIncome(userInfo, pageable);
     }
 
-    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIncomeById(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+        return incomeService.getIncomeById(id, userInfo);
+    }
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateIncome(@PathVariable Long id, @Valid @RequestBody IncomeDto incomeDto,
             @AuthenticationPrincipal UserInfo userInfo) throws Exception {
         return incomeService.updateIncome(id, incomeDto, userInfo);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteIncome(@PathVariable Long id,
+            @AuthenticationPrincipal UserInfo userInfo) throws Exception {
+        return incomeService.deleteIncome(id, userInfo);
     }
 }

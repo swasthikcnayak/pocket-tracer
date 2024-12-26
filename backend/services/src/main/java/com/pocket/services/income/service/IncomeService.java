@@ -10,17 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pocket.services.common.exceptions.UnhandledException;
 import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.common.user.model.User;
 import com.pocket.services.expense.exceptions.ExpenseServiceException;
+import com.pocket.services.income.exceptions.IncomeServiceException;
 import com.pocket.services.income.dto.mapper.IncomeMapper;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.dto.response.IncomeDtoResponse;
-import com.pocket.services.income.dto.response.IncomeSuccessReponse;
 import com.pocket.services.income.exceptions.ErrorCode;
-import com.pocket.services.income.exceptions.IncomeServiceException;
 import com.pocket.services.income.model.Income;
 import com.pocket.services.income.repository.IncomeRepository;
 
@@ -51,25 +51,50 @@ public class IncomeService {
         }
     }
 
-    public ResponseEntity<?> updateIncome(Long id, IncomeDto incomeDto, UserInfo userInfo) throws Exception {
-        Income existingIncome = incomeRepository.findByIdAndUser(id, new User(userInfo.getId()))
-                .orElseThrow(() -> new Exception(String.format("INCOME_NOT_FOUND")));
-        existingIncome.setAmount(incomeDto.getAmount());
-        existingIncome.setCategory(incomeDto.getCategory());
-        existingIncome.setDate(incomeDto.getDate());
-        existingIncome.setTitle(incomeDto.getTitle());
-        existingIncome.setDescription(incomeDto.getDescription());
-        incomeRepository.save(existingIncome);
-        return ResponseEntity.ok()
-                .body(new IncomeSuccessReponse(HttpStatus.CREATED.value(), "Income updated successfully"));
-    }
-
     public ResponseEntity<?> getIncome(UserInfo userInfo, Pageable pageable) {
-        if(pageable == null){
-            throw new ExpenseServiceException(ErrorCode.INCOME_INVALID_PAGE, "Invalid page request");
+        if (pageable == null) {
+            throw new IncomeServiceException(ErrorCode.INCOME_INVALID_PAGE, "Invalid page request");
         }
         Page<IncomeDtoResponse> incomes = incomeRepository.findAllByUser(new User(userInfo.getId()), pageable);
         return ResponseEntity.ok().body(incomes);
     }
 
+    public ResponseEntity<?> getIncomeById(Long id, UserInfo userInfo) {
+        try {
+            IncomeDtoResponse expense = incomeRepository.findByIdAndUser(id, new User(userInfo.getId()))
+                    .orElseThrow(() -> new IncomeServiceException(ErrorCode.INCOME_NOT_FOUND, "Income not found",
+                            HttpStatus.NOT_FOUND));
+            return ResponseEntity.ok().body(expense);
+        } catch (Exception e) {
+            logger.error("Exception in get income by id", e);
+            throw new UnhandledException(ErrorCode.INCOME_GET_EXCEPTION, e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> updateIncome(Long id, IncomeDto incomeDto, UserInfo userInfo) {
+        Income existingIncome = incomeRepository.findIncomeByIdAndUser(id, new User(userInfo.getId()))
+                .orElseThrow(() -> new ExpenseServiceException(ErrorCode.INCOME_NOT_FOUND, "Income not found",
+                        HttpStatus.NOT_FOUND));
+        existingIncome.setAmount(incomeDto.getAmount());
+        existingIncome.setCategory(incomeDto.getCategory());
+        existingIncome.setDate(incomeDto.getDate());
+        existingIncome.setTitle(incomeDto.getTitle());
+        existingIncome.setDescription(incomeDto.getDescription());
+        try {
+            incomeRepository.save(existingIncome);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Updated");
+        } catch (Exception e) {
+            logger.error("Exception in update income by id", e);
+            throw new UnhandledException(ErrorCode.INCOME_UPDATE_EXCEPTION, e.getMessage());
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteIncome(Long id, UserInfo userInfo) {
+        int result = incomeRepository.deleteByIdAndUser(id, new User(userInfo.getId()));
+        if (result == 1) {
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        throw new ExpenseServiceException(ErrorCode.INCOME_NOT_FOUND, "Income not found", HttpStatus.NOT_FOUND);
+    }
 }

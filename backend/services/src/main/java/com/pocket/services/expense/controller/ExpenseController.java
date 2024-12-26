@@ -19,6 +19,8 @@ import com.pocket.services.expense.service.ExpenseService;
 import com.pocket.services.expense.utils.PageUtils;
 
 import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -43,9 +45,20 @@ public class ExpenseController {
         return expenseService.getExpense(userInfo, pageable);
     }
 
-    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateIncome(@PathVariable Long id, @Valid @RequestBody ExpenseDto expenseDto,
-            @AuthenticationPrincipal UserInfo userInfo) throws Exception {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getExpenseById(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+        return expenseService.getExpenseById(id, userInfo);
+    }
+    
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<?> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseDto expenseDto,
+            @AuthenticationPrincipal UserInfo userInfo){
         return expenseService.updateExpense(id, expenseDto, userInfo);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteExpense(@PathVariable Long id,
+            @AuthenticationPrincipal UserInfo userInfo) throws Exception {
+        return expenseService.deleteExpense(id, userInfo);
     }
 }

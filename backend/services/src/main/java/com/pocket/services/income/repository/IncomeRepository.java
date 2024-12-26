@@ -12,9 +12,13 @@ import com.pocket.services.income.dto.response.IncomeDtoResponse;
 import com.pocket.services.income.model.Income;
 
 @Repository
-public interface IncomeRepository extends JpaRepository<Income, Long>{
+public interface IncomeRepository extends JpaRepository<Income, Long> {
 
-    Optional<Income> findByIdAndUser(Long id, User user);
+    Optional<Income> findIncomeByIdAndUser(Long id, User user);
+
+    Optional<IncomeDtoResponse> findByIdAndUser(Long id, User user);
 
     Page<IncomeDtoResponse> findAllByUser(User user, Pageable pageable);
+
+    int deleteByIdAndUser(Long id, User user);
 }
