@@ -1,4 +1,4 @@
-package com.pocket.services.security.dto;
+package com.pocket.services.common.security.dto;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.pocket.services.user.model.Role;
+import com.pocket.services.common.user.model.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

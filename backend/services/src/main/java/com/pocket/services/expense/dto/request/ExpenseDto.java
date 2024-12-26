@@ -1,7 +1,8 @@
 package com.pocket.services.expense.dto.request;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pocket.services.expense.model.Category;
 
 import jakarta.validation.constraints.DecimalMin;
@@ -13,20 +14,21 @@ import lombok.Data;
 @Data
 public class ExpenseDto {
 
-    @NotNull(message = "Amount cannot be null")
-    @DecimalMin("0.1")
+    @NotNull(message = "amount cannot be null")
+    @DecimalMin(value = "0.01", message="amount must be atleast 0.01")
     private double amount;
 
-    @NotNull(message = "Amount cannot be null")
-    @NotEmpty(message = "Amount cannot be empty")
+    @NotNull(message = "title cannot be null")
+    @NotEmpty(message = "title cannot be empty")
     private String title;
 
-    @NotNull(message = "Category cannot be null")
+    @NotNull(message = "category cannot be null")
     private Category category;
 
     @NotNull(message = "date cannot be empty")
-    @PastOrPresent(message = "Date has to be past or present")
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @PastOrPresent(message = "date has to be past or present")
+    private LocalDateTime date;
 
     private String description;
 }

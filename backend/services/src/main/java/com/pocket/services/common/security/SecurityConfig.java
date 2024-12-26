@@ -1,4 +1,4 @@
-package com.pocket.services.security;
+package com.pocket.services.common.security;
 
 import java.util.Arrays;
 
@@ -20,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.pocket.services.security.service.AuthService;
+import com.pocket.services.common.security.service.AuthService;
 
 @Configuration
 @EnableWebSecurity

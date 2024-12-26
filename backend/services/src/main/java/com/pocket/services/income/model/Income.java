@@ -2,7 +2,7 @@ package com.pocket.services.income.model;
 
 import java.time.LocalDate;
 
-import com.pocket.services.user.model.User;
+import com.pocket.services.common.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,5 +1,6 @@
 package com.pocket.services.expense.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -7,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.pocket.services.common.user.model.User;
 import com.pocket.services.expense.dto.response.ExpenseDtoResponse;
 import com.pocket.services.expense.model.Expense;
-import com.pocket.services.user.model.User;
 
 
 @Repository

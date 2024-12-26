@@ -1,4 +1,4 @@
-package com.pocket.services.security.util;
+package com.pocket.services.common.security.util;
 
 import java.security.Key;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package com.pocket.services.security;
+package com.pocket.services.common.security;
 
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.pocket.services.security.dto.UserInfo;
-import com.pocket.services.security.util.JwtUtils;
+import com.pocket.services.common.security.dto.UserInfo;
+import com.pocket.services.common.security.util.JwtUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

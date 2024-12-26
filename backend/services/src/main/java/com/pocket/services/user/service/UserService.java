@@ -15,17 +15,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.pocket.services.security.dto.UserInfo;
-import com.pocket.services.security.util.JwtUtils;
+import com.pocket.services.common.exceptions.UnhandledException;
+import com.pocket.services.common.security.dto.UserInfo;
+import com.pocket.services.common.security.util.JwtUtils;
+import com.pocket.services.common.user.model.User;
+import com.pocket.services.common.user.repository.UserRepository;
 import com.pocket.services.user.dto.mapper.UserMapper;
 import com.pocket.services.user.dto.request.LoginUserDto;
 import com.pocket.services.user.dto.request.RegisterUserDto;
 import com.pocket.services.user.dto.response.LoginUserResponseDto;
 import com.pocket.services.user.exceptions.ErrorCode;
-import com.pocket.services.user.exceptions.UnhandledException;
 import com.pocket.services.user.exceptions.UserServiceException;
-import com.pocket.services.user.model.User;
-import com.pocket.services.user.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -52,7 +52,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Success");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         } catch (DataIntegrityViolationException ex) {
             throw new UserServiceException(ErrorCode.USER_CONSTRAINS_DOES_NOT_MATCH, "User Already exist");
         } catch(JpaSystemException ex) {

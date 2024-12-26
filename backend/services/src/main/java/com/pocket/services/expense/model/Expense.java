@@ -1,11 +1,13 @@
 package com.pocket.services.expense.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import com.pocket.services.user.model.User;
+import com.pocket.services.common.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -34,11 +36,12 @@ public class Expense {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(name = "description", nullable = true)
     private String description;

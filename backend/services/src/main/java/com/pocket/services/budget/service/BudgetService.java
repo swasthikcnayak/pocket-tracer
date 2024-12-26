@@ -11,8 +11,8 @@ import com.pocket.services.budget.dto.response.BudgetResponseDto;
 import com.pocket.services.budget.dto.response.BudgetSuccessReponse;
 import com.pocket.services.budget.model.Budget;
 import com.pocket.services.budget.repository.BudgetRepository;
-import com.pocket.services.security.dto.UserInfo;
-import com.pocket.services.user.model.User;
+import com.pocket.services.common.security.dto.UserInfo;
+import com.pocket.services.common.user.model.User;
 
 @Service
 public class BudgetService {

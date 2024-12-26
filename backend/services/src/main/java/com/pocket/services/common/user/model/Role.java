@@ -1,4 +1,4 @@
-package com.pocket.services.user.model;
+package com.pocket.services.common.user.model;
 
 public enum Role {
     ROLE_USER,

@@ -7,14 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.pocket.services.common.security.dto.UserInfo;
+import com.pocket.services.common.user.model.User;
 import com.pocket.services.income.dto.mapper.IncomeMapper;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.dto.response.IncomeDtoResponse;
 import com.pocket.services.income.dto.response.IncomeSuccessReponse;
 import com.pocket.services.income.model.Income;
 import com.pocket.services.income.repository.IncomeRepository;
-import com.pocket.services.security.dto.UserInfo;
-import com.pocket.services.user.model.User;
 
 @Service
 public class IncomeService {

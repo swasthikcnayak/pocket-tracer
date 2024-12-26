@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.service.IncomeService;
-import com.pocket.services.security.dto.UserInfo;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;

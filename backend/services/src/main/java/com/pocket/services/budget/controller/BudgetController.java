@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pocket.services.budget.dto.request.BudgetDto;
 import com.pocket.services.budget.service.BudgetService;
-import com.pocket.services.security.dto.UserInfo;
+import com.pocket.services.common.security.dto.UserInfo;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;

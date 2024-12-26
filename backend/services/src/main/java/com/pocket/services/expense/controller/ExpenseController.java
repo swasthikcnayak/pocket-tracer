@@ -1,7 +1,6 @@
 package com.pocket.services.expense.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.expense.dto.request.ExpenseDto;
 import com.pocket.services.expense.service.ExpenseService;
-import com.pocket.services.security.dto.UserInfo;
+import com.pocket.services.expense.utils.SortUtils;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,16 +28,18 @@ public class ExpenseController {
     @Autowired
     ExpenseService expenseService;
 
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addIncome(@Valid @RequestBody ExpenseDto expenseDto,
             @AuthenticationPrincipal UserInfo userInfo) {
         return expenseService.addExpense(expenseDto, userInfo);
     }
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getExpense(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserInfo userInfo) {
-        Pageable pageable = PageRequest.of(page, size);
+            @RequestParam(defaultValue = "10") int size, 
+            @RequestParam(defaultValue = "date") String sort,
+            @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
+        Pageable pageable = SortUtils.buildPageable(Math.max(0,page-1), size, sort, order);
         return expenseService.getExpense(userInfo, pageable);
     }
 

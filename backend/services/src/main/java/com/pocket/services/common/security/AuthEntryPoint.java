@@ -1,4 +1,4 @@
-package com.pocket.services.security;
+package com.pocket.services.common.security;
 
 import java.io.IOException;
 import java.util.HashMap;

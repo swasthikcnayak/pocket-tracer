@@ -1,4 +1,4 @@
-package com.pocket.services.user.exceptions;
+package com.pocket.services.common.exceptions;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

@@ -2,7 +2,7 @@ package com.pocket.services.budget.model;
 
 import java.util.List;
 
-import com.pocket.services.user.model.User;
+import com.pocket.services.common.user.model.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

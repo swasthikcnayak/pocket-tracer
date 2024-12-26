@@ -1,4 +1,4 @@
-package com.pocket.services.security.service;
+package com.pocket.services.common.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.pocket.services.user.repository.UserRepository;
+import com.pocket.services.common.user.repository.UserRepository;
 
 @Service
 public class AuthService implements UserDetailsService {

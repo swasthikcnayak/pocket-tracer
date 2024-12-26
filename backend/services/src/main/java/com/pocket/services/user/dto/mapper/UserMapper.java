@@ -3,8 +3,8 @@ package com.pocket.services.user.dto.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.pocket.services.common.user.model.User;
 import com.pocket.services.user.dto.request.RegisterUserDto;
-import com.pocket.services.user.model.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

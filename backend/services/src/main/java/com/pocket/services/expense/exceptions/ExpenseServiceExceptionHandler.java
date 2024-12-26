@@ -1,4 +1,7 @@
-package com.pocket.services.user.exceptions;
+package com.pocket.services.expense.exceptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,17 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @ControllerAdvice
-public class UserServiceExceptionHandler {
+public class ExpenseServiceExceptionHandler {
+    
+    private final Logger logger = LoggerFactory.getLogger(ExpenseServiceExceptionHandler.class);
 
-    private final Logger logger = LoggerFactory.getLogger(UserServiceExceptionHandler.class);
-
-    @ExceptionHandler(UserServiceException.class)
-    public ResponseEntity<Map<String, String>> handleUserServiceException(UserServiceException ex) {
-        logger.error("user service violation", ex);
+    @ExceptionHandler(ExpenseServiceException.class)
+    public ResponseEntity<Map<String, String>> handleUserServiceException(ExpenseServiceException ex) {
+        logger.error("expense service exception", ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());
         return new ResponseEntity<>(errorMessages, ex.status != null ? ex.status : HttpStatus.BAD_REQUEST);
