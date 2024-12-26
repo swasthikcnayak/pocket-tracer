@@ -18,9 +18,10 @@ public class ExpenseServiceExceptionHandler {
 
     @ExceptionHandler(ExpenseServiceException.class)
     public ResponseEntity<Map<String, String>> handleUserServiceException(ExpenseServiceException ex) {
-        logger.error("expense service exception", ex);
+        logger.error("expense service exception "+ex.errorCode, ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());
+        errorMessages.put("code", ex.errorCode);
         return new ResponseEntity<>(errorMessages, ex.status != null ? ex.status : HttpStatus.BAD_REQUEST);
     }
 }

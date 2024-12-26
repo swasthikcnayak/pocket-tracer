@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.expense.dto.request.ExpenseDto;
 import com.pocket.services.expense.service.ExpenseService;
-import com.pocket.services.expense.utils.SortUtils;
+import com.pocket.services.expense.utils.PageUtils;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,7 @@ public class ExpenseController {
             @RequestParam(defaultValue = "10") int size, 
             @RequestParam(defaultValue = "date") String sort,
             @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
-        Pageable pageable = SortUtils.buildPageable(Math.max(0,page-1), size, sort, order);
+        Pageable pageable = PageUtils.buildPageable(Math.max(0,page-1), size, sort, order);
         return expenseService.getExpense(userInfo, pageable);
     }
 

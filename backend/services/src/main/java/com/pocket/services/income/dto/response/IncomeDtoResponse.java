@@ -1,6 +1,6 @@
 package com.pocket.services.income.dto.response;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.pocket.services.income.model.Category;
 
@@ -16,6 +16,6 @@ public class IncomeDtoResponse {
     private double amount;
     private String title;
     private Category category;
-    private LocalDate date;
+    private LocalDateTime date;
     private String description;
 }

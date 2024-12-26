@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort;
 
 import io.jsonwebtoken.lang.Arrays;
 
-public class SortUtils {
+public class PageUtils {
 
     private static List<String> supportedSortFields = Arrays
             .asList(new String[] { "date", "id", "amount", "title", "category"  });

@@ -42,12 +42,12 @@ public class ExpenseService {
         expenseRepository.save(expense);
         return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         } catch (DataIntegrityViolationException ex) {
-            throw new ExpenseServiceException(ErrorCode.EXPENSE_CONSTRAINTS_DOES_NOT_MATCH, "User Already exist");
+            throw new ExpenseServiceException(ErrorCode.EXPENSE_CONSTRAINTS_DOES_NOT_MATCH, "Expense creation error");
         } catch(JpaSystemException ex) {
-            throw new ExpenseServiceException(ErrorCode.EXPENSE_ALREADY_EXIST, "User Already exist");
+            throw new ExpenseServiceException(ErrorCode.EXPENSE_ALREADY_EXIST, "Expense creation error");
         }
         catch (Exception e) {
-            logger.error("Exception in register User", e);
+            logger.error("Exception in add expense", e);
             throw new UnhandledException(ErrorCode.EXPENSE_CREATION_EXCEPTION, e.getMessage());
         }
     }

@@ -1,7 +1,6 @@
 package com.pocket.services.income.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.service.IncomeService;
+import com.pocket.services.income.utils.PageUtils;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,16 +28,18 @@ public class IncomeController {
     @Autowired
     IncomeService incomeService;
 
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addIncome(@Valid @RequestBody IncomeDto incomeDto,
             @AuthenticationPrincipal UserInfo userInfo) {
         return incomeService.addIncome(incomeDto, userInfo);
     }
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIncome(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, @AuthenticationPrincipal UserInfo userInfo) {
-        Pageable pageable = PageRequest.of(page, size);
+    @RequestParam(defaultValue = "10") int size, 
+    @RequestParam(defaultValue = "date") String sort,
+    @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
+        Pageable pageable = PageUtils.buildPageable(Math.max(0,page-1), size, sort, order);
         return incomeService.getIncome(userInfo, pageable);
     }
 
