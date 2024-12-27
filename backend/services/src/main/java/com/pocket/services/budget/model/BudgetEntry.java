@@ -8,14 +8,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "budget_entry")
+@Entity
+@Table(name = "budget_entry",
+indexes = {@Index(name = "budget_budget_id", columnList = "budget_id")})
 public class BudgetEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

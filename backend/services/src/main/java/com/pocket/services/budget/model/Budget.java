@@ -12,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -23,9 +24,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "budget",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "month", "year"})
-    )
+@Table(name = "budget", uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "month", "year" }), indexes = {
+        @Index(name = "budget_user_id", columnList = "user_id"),
+        @Index(name = "budget_month_year", columnList = "month, year") })
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

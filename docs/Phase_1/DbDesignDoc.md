@@ -11,7 +11,6 @@ Using MySQL db : Because our data has a fixed structure. Working with structured
   - id
   - email
   - password
-  - name
   
 - Expense
   - id
@@ -20,24 +19,25 @@ Using MySQL db : Because our data has a fixed structure. Working with structured
   - Amount
   - title
   - Category
-  - Mode
-  - time_of_expense
-  - created_at
+  - datetime
   
 - Income
   - id
   - user_id
   - Description
   - Amount
-  - Income Stream
+  - Category
   - title
-  - time_of_income
-  - created_at
+  - datetime
   
 - Budget
   - id
   - user_id
-  - created_at
-  - Category
-  - Budget Amount
-  - Description
+  - month
+  - year
+  - List of Budget_Entries
+
+- Budget_Entries
+  - budget_id
+  - category
+  - amount

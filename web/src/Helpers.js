@@ -45,5 +45,5 @@ export const removeItem = (item) => {
 
 // Check if user logged in from localstorage
 export const isLoggedIn = () => {
-  return getItem('access_token') &&  getItem('expires_in');
+  return getItem('access_token') && getItem('expires_in');
 };

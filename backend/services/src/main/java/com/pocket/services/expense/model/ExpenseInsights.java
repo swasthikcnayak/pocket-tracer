@@ -1,4 +1,4 @@
-package com.pocket.services.income.model;
+package com.pocket.services.expense.model;
 
 import java.time.LocalDateTime;
 
@@ -22,10 +22,10 @@ import jakarta.persistence.GenerationType;
 @Getter
 @Setter
 @Entity
-@Table(name = "income", indexes = {
-        @Index(name = "income_user_id", columnList = "user_id"),
+@Table(name = "expense_insigths", indexes =  {
+    @Index(name = "idx_user", columnList = "user_id"),
 })
-public class Income {
+public class ExpenseInsights {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
