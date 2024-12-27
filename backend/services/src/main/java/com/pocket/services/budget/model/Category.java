@@ -5,4 +5,5 @@ public enum Category {
     UTILITY,
     BILLS,
     OTHERS,
+    HOUSEHOLD,
 }
