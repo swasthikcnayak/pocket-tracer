@@ -12,4 +12,6 @@ import com.pocket.services.common.user.model.User;
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     public Optional<Budget> findByUserAndMonthAndYear(User user, int month, int year);
+
+    public Optional<Budget> findByUserAndId(User user, Long id);
 }

@@ -15,7 +15,10 @@ import com.pocket.services.budget.service.BudgetService;
 import com.pocket.services.common.security.dto.UserInfo;
 
 import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/v1/budget")
@@ -24,15 +27,28 @@ public class BudgetController {
     @Autowired
     BudgetService budgetService;
 
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addBudget(@Valid @RequestBody BudgetDto budgetDto,
             @AuthenticationPrincipal UserInfo userInfo) {
         return budgetService.addBudget(budgetDto, userInfo);
     }
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBudget(@RequestParam(defaultValue = "1") int month,
-            @RequestParam(defaultValue = "2020") int year, @AuthenticationPrincipal UserInfo userInfo) throws Exception {
+            @RequestParam(defaultValue = "2020") int year, @AuthenticationPrincipal UserInfo userInfo)
+            throws Exception {
         return budgetService.getBudget(userInfo, month, year);
     }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBudgetById(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+        return budgetService.getBudgetById(userInfo, id);
+    }
+
+    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateBudget(@PathVariable Long id, @Valid @RequestBody BudgetDto budgetDto,
+            @AuthenticationPrincipal UserInfo userInfo) {
+        return budgetService.updateBudget(id, budgetDto, userInfo);
+    }
+
 }

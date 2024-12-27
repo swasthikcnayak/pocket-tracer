@@ -1,5 +1,6 @@
 package com.pocket.services.budget.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pocket.services.common.user.model.User;
@@ -14,12 +15,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "budget")
+@Entity
+@Table(name = "budget",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "month", "year"})
+    )
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +42,5 @@ public class Budget {
     private int year;
 
     @OneToMany(mappedBy = "budget", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BudgetEntry> budgetEntries;
+    private List<BudgetEntry> budgetEntries = new ArrayList<>();
 }
