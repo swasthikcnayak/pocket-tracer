@@ -1,7 +1,5 @@
 package com.pocket.services.expense.model;
 
-import java.time.LocalDateTime;
-
 import com.pocket.services.common.user.model.User;
 
 import jakarta.persistence.Column;
@@ -15,6 +13,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.GenerationType;
@@ -22,9 +21,9 @@ import jakarta.persistence.GenerationType;
 @Getter
 @Setter
 @Entity
-@Table(name = "expense_insigths", indexes =  {
-    @Index(name = "idx_user", columnList = "user_id"),
-})
+@Table(name = "expense_insights", indexes = {
+        @Index(name = "idx_user", columnList = "user_id"),
+}, uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "category", "month", "year" }))
 public class ExpenseInsights {
 
     @Id
@@ -35,19 +34,16 @@ public class ExpenseInsights {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Column(name = "amount", nullable = false)
-    private double amount;
-
-    @Column(name = "title", nullable = false)
-    private String title;
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
 
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    @Column(name = "month", nullable = false)
+    private int month;
 
-    @Column(name = "description", nullable = true)
-    private String description;
+    @Column(name = "year", nullable = false)
+    private int year;
+
+    @Column(name = "total_amount", nullable = false)
+    private double totalmount;
 }

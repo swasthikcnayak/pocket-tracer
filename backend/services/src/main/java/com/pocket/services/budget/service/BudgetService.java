@@ -71,6 +71,9 @@ public class BudgetService {
             BudgetResponseDto budgetResponseDto = budgetMapper.toBudgetEntryResponseDto(budget);
             return ResponseEntity.ok()
                     .body(budgetResponseDto);
+        } catch (BudgetServiceException e) {
+            logger.error("Exception in get budget, BudgetServiceException", e);
+            throw e;
         } catch (Exception e) {
             logger.error("Exception in get budget ", e);
             throw new UnhandledException(ErrorCode.BUDGET_GET_EXCEPTION, e.getMessage());
@@ -86,6 +89,9 @@ public class BudgetService {
             BudgetResponseDto budgetResponseDto = budgetMapper.toBudgetEntryResponseDto(budget);
             return ResponseEntity.ok()
                     .body(budgetResponseDto);
+        } catch (BudgetServiceException e) {
+            logger.error("Exception in get budget by id", e);
+            throw e;
         } catch (Exception e) {
             logger.error("Exception in get budget by id", e);
             throw new UnhandledException(ErrorCode.BUDGET_GET_EXCEPTION, e.getMessage());
@@ -122,10 +128,13 @@ public class BudgetService {
                 }
             }
             return ResponseEntity.status(HttpStatus.CREATED).body("Updated");
+        } catch (BudgetServiceException e) {
+            logger.error("Exception in update budget", e);
+            throw e;
         } catch (Exception e) {
             logger.error("Exception in update budget", e);
-            throw new UnhandledException(ErrorCode.BUDGET_UPDATE_EXCEPTION, e.getMessage());
+            throw new UnhandledException(ErrorCode.BUDGET_GET_EXCEPTION, e.getMessage());
         }
-                
+
     }
 }

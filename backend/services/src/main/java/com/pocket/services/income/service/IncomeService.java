@@ -65,7 +65,11 @@ public class IncomeService {
                     .orElseThrow(() -> new IncomeServiceException(ErrorCode.INCOME_NOT_FOUND, "Income not found",
                             HttpStatus.NOT_FOUND));
             return ResponseEntity.ok().body(expense);
-        } catch (Exception e) {
+        } catch (IncomeServiceException e) {
+            logger.error("Exception in get income by id", e);
+            throw e;
+        }
+        catch (Exception e) {
             logger.error("Exception in get income by id", e);
             throw new UnhandledException(ErrorCode.INCOME_GET_EXCEPTION, e.getMessage());
         }

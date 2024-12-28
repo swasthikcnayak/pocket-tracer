@@ -1,5 +1,7 @@
 package com.pocket.services.expense.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ public class ExpenseAnalyticsService {
     @Autowired
     AnalyticsTaskManagerFactory analyticsTaskManagerFactory;
 
-    public void handleExpense(Expense expense, Task task) {
-        AnalyticsTaskManager taskManager = analyticsTaskManagerFactory.getTaskManager(expense,task);
+    public void handleExpense(Task task, List<Expense> expense) {
+        AnalyticsTaskManager taskManager = analyticsTaskManagerFactory.getTaskManager(task, expense);
         threadPoolTaskExecutor.execute(taskManager);
     }
 

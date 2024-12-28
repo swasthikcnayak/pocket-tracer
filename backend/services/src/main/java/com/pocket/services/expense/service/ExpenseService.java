@@ -1,5 +1,7 @@
 package com.pocket.services.expense.service;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -39,12 +41,13 @@ public class ExpenseService {
     @Autowired
     private ExpenseAnalyticsService expenseAnalyticsService;
 
+    @Transactional
     public ResponseEntity<?> addExpense(ExpenseDto expenseDto, UserInfo userInfo) {
         Expense expense = expenseMapper.toExpenseModel(expenseDto);
         expense.setUser(new User(userInfo.getId()));
         try {
             expense = expenseRepository.save(expense);
-            expenseAnalyticsService.handleExpense(expense, Task.CREATE);
+            expenseAnalyticsService.handleExpense(Task.CREATE, Arrays.asList(expense));
             return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         } catch (DataIntegrityViolationException ex) {
             throw new ExpenseServiceException(ErrorCode.EXPENSE_CONSTRAINTS_DOES_NOT_MATCH, "Expense creation error");
@@ -70,12 +73,17 @@ public class ExpenseService {
                     .orElseThrow(() -> new ExpenseServiceException(ErrorCode.EXPENSE_NOT_FOUND, "Expense not found",
                             HttpStatus.NOT_FOUND));
             return ResponseEntity.ok().body(expense);
-        } catch (Exception e) {
+        } catch (ExpenseServiceException expenseServiceException) {
+            logger.error("Exception in get expense by id", expenseServiceException);
+            throw expenseServiceException;
+        }catch(Exception e){
             logger.error("Exception in get expense by id", e);
             throw new UnhandledException(ErrorCode.EXPENSE_GET_EXCEPTION, e.getMessage());
         }
+
     }
 
+    @Transactional
     public ResponseEntity<?> updateExpense(Long id, ExpenseDto expenseDto, UserInfo userInfo) {
         Expense existingExpense = expenseRepository.findExpenseByIdAndUser(id, new User(userInfo.getId()))
                 .orElseThrow(() -> new ExpenseServiceException(ErrorCode.EXPENSE_NOT_FOUND, "Expense not found",
@@ -89,8 +97,7 @@ public class ExpenseService {
         existingExpense.setDescription(expenseDto.getDescription());
         try {
             existingExpense = expenseRepository.save(existingExpense);
-            expenseAnalyticsService.handleExpense(oldCopy, Task.DELETE);
-            expenseAnalyticsService.handleExpense(existingExpense, Task.CREATE);
+            expenseAnalyticsService.handleExpense(Task.UPDATE, Arrays.asList(oldCopy, existingExpense));
             return ResponseEntity.status(HttpStatus.CREATED).body("Updated");
         } catch (Exception e) {
             logger.error("Exception in update expense by id", e);
@@ -105,7 +112,7 @@ public class ExpenseService {
                         HttpStatus.NOT_FOUND));
         try {
             expenseRepository.delete(expense);
-            expenseAnalyticsService.handleExpense(expense, Task.DELETE);
+            expenseAnalyticsService.handleExpense(Task.DELETE, Arrays.asList(expense));
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e) {
             logger.error("Exception in update expense by id", e);
