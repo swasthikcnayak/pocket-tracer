@@ -11,7 +11,7 @@ import com.pocket.services.expense.service.analytics.service.ExpenseInsightsUpda
 public class ExpenseDeleteTaskManager extends AnalyticsTaskManager {
     Logger logger = LoggerFactory.getLogger(ExpenseDeleteTaskManager.class);
 
-    public ExpenseDeleteTaskManager(List<Expense> expense,  ExpenseInsightsUpdateService expenseInsightsUpdateService) {
+    public ExpenseDeleteTaskManager(List<Expense> expense, ExpenseInsightsUpdateService expenseInsightsUpdateService) {
         super(expense, expenseInsightsUpdateService);
     }
 

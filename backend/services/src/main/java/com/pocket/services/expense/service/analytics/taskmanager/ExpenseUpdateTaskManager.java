@@ -12,7 +12,7 @@ public class ExpenseUpdateTaskManager extends AnalyticsTaskManager {
 
     Logger logger = LoggerFactory.getLogger(ExpenseCreateTaskManager.class);
 
-    public ExpenseUpdateTaskManager(List<Expense> expense,  ExpenseInsightsUpdateService expenseInsightsUpdateService) {
+    public ExpenseUpdateTaskManager(List<Expense> expense, ExpenseInsightsUpdateService expenseInsightsUpdateService) {
         super(expense, expenseInsightsUpdateService);
     }
 

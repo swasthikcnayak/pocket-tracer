@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pocket.services.expense.model.Expense;
-import com.pocket.services.expense.repository.ExpenseInsightsRepository;
+import com.pocket.services.expense.repository.ExpenseAnalyticsRepository;
 
 @Service
 public class ExpenseInsightsUpdateService {
@@ -17,7 +17,7 @@ public class ExpenseInsightsUpdateService {
     Logger logger = LoggerFactory.getLogger(ExpenseInsightsUpdateService.class);
 
     @Autowired
-    ExpenseInsightsRepository expenseInsightsRepository;
+    ExpenseAnalyticsRepository expenseAnalyticsRepository;
 
     @Transactional
     public void updateExpense(List<Expense> expense) {
@@ -32,7 +32,7 @@ public class ExpenseInsightsUpdateService {
     @Transactional
     public void deleteExpense(Expense expense) {
         try {
-            this.expenseInsightsRepository.deleteExpense(
+            this.expenseAnalyticsRepository.deleteExpense(
                     expense.getUser().getId(), expense.getCategory().toString(), expense.getDate().getMonthValue(),
                     expense.getDate().getYear(), expense.getAmount());
             logger.info("Expense updated : Delete");
@@ -44,7 +44,7 @@ public class ExpenseInsightsUpdateService {
     @Transactional
     public void addExpense(Expense expense) {
         try {
-            this.expenseInsightsRepository.addExpense(
+            this.expenseAnalyticsRepository.addExpense(
                     expense.getUser().getId(), expense.getCategory().toString(), expense.getDate().getMonthValue(),
                     expense.getDate().getYear(), expense.getAmount());
             logger.info("Expense updated : Add");

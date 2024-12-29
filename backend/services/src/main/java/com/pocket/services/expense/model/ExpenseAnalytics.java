@@ -24,7 +24,7 @@ import jakarta.persistence.GenerationType;
 @Table(name = "expense_insights", indexes = {
         @Index(name = "idx_user", columnList = "user_id"),
 }, uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "category", "month", "year" }))
-public class ExpenseInsights {
+public class ExpenseAnalytics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

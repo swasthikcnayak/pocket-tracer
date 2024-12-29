@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public class ExpenseServiceException extends RuntimeException {
     String errorCode;
     HttpStatus status;
+
     public ExpenseServiceException(String errorCode, String message) {
         super(message);
         this.errorCode = errorCode;

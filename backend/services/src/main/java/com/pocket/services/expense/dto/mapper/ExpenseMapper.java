@@ -6,7 +6,6 @@ import org.mapstruct.Mapping;
 import com.pocket.services.expense.dto.request.ExpenseDto;
 import com.pocket.services.expense.model.Expense;
 
-
 @Mapper(componentModel = "spring")
 public interface ExpenseMapper {
     @Mapping(target = "id", ignore = true)

@@ -18,15 +18,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "budget_entry",
-indexes = {@Index(name = "budget_budget_id", columnList = "budget_id")})
+@Table(name = "budget_entry", indexes = { @Index(name = "budget_budget_id", columnList = "budget_id") })
 public class BudgetEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = -1L;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="budget_id")
+    @JoinColumn(name = "budget_id")
     private Budget budget;
 
     @Enumerated(value = EnumType.STRING)

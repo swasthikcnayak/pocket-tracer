@@ -6,7 +6,6 @@ import org.mapstruct.Mapping;
 import com.pocket.services.income.dto.request.IncomeDto;
 import com.pocket.services.income.model.Income;
 
-
 @Mapper(componentModel = "spring")
 public interface IncomeMapper {
     @Mapping(target = "id", ignore = true)

@@ -12,13 +12,13 @@ import com.pocket.services.expense.service.analytics.taskmanager.AnalyticsTaskMa
 import com.pocket.services.expense.service.analytics.taskmanager.ExpenseCreateTaskManager;
 import com.pocket.services.expense.service.analytics.taskmanager.ExpenseDeleteTaskManager;
 import com.pocket.services.expense.service.analytics.taskmanager.ExpenseUpdateTaskManager;
-import com.pocket.services.expense.repository.ExpenseInsightsRepository;
+import com.pocket.services.expense.repository.ExpenseAnalyticsRepository;
 
 @Component
 public class AnalyticsTaskManagerFactory {
 
     @Autowired
-    ExpenseInsightsRepository expenseInsightsRepository;
+    ExpenseAnalyticsRepository expenseAnalyticsRepository;
 
     @Autowired
     ExpenseInsightsUpdateService expenseInsightsUpdateService;

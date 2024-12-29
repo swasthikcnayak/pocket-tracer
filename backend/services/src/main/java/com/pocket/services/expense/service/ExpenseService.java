@@ -76,7 +76,7 @@ public class ExpenseService {
         } catch (ExpenseServiceException expenseServiceException) {
             logger.error("Exception in get expense by id", expenseServiceException);
             throw expenseServiceException;
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Exception in get expense by id", e);
             throw new UnhandledException(ErrorCode.EXPENSE_GET_EXCEPTION, e.getMessage());
         }

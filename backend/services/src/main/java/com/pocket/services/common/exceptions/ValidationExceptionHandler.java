@@ -44,10 +44,10 @@ public class ValidationExceptionHandler {
         List<ObjectError> violations = ex.getAllErrors();
         for (ObjectError violation : violations) {
             String errorMessage = violation.getDefaultMessage();
-            if(errorMessage!=null){
-            String fieldName = errorMessage.split(" ")[0];
-            errorMessages.put(fieldName, errorMessage);
-        }
+            if (errorMessage != null) {
+                String fieldName = errorMessage.split(" ")[0];
+                errorMessages.put(fieldName, errorMessage);
+            }
         }
         return new ResponseEntity<>(errorMessages, HttpStatus.UNPROCESSABLE_ENTITY);
     }

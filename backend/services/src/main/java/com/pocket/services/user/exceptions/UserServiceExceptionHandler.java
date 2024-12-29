@@ -17,7 +17,7 @@ public class UserServiceExceptionHandler {
 
     @ExceptionHandler(UserServiceException.class)
     public ResponseEntity<Map<String, String>> handleUserServiceException(UserServiceException ex) {
-        logger.error("user service violation "+ex.errorCode, ex);
+        logger.error("user service violation " + ex.errorCode, ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());
         errorMessages.put("code", ex.errorCode);

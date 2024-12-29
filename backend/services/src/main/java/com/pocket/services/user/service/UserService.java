@@ -55,10 +55,9 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.CREATED).body("Created");
         } catch (DataIntegrityViolationException ex) {
             throw new UserServiceException(ErrorCode.USER_CONSTRAINS_DOES_NOT_MATCH, "User Already exist");
-        } catch(JpaSystemException ex) {
+        } catch (JpaSystemException ex) {
             throw new UserServiceException(ErrorCode.USER_ALREADY_EXIST, "User Already exist");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Exception in register User", e);
             throw new UnhandledException(ErrorCode.USER_CREATION_EXCEPTION, e.getMessage());
         }

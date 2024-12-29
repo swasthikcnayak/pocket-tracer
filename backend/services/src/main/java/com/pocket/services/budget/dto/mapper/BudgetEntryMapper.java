@@ -13,6 +13,5 @@ public interface BudgetEntryMapper {
     @Mapping(target = "budget", ignore = true)
     BudgetEntry toBudgetEntryModel(BudgetEntryDto budgetEntryDto);
 
-
     BudgetEntryResponseDto toBudgetEntryResponseDto(BudgetEntry budgetEntry);
 }

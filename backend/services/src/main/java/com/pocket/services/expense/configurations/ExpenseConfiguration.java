@@ -10,8 +10,8 @@ public class ExpenseConfiguration {
     @Bean
     public ThreadPoolTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);    // Minimum threads
-        executor.setMaxPoolSize(10);   // Maximum threads
+        executor.setCorePoolSize(5); // Minimum threads
+        executor.setMaxPoolSize(10); // Maximum threads
         executor.setQueueCapacity(100); // Task queue size
         executor.setThreadNamePrefix("Expense-Analytics-Executor");
         executor.initialize();

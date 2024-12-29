@@ -11,7 +11,7 @@ import io.jsonwebtoken.lang.Arrays;
 public class PageUtils {
 
     private static List<String> supportedSortFields = Arrays
-            .asList(new String[] { "date", "id", "amount", "title", "category"  });
+            .asList(new String[] { "date", "id", "amount", "title", "category" });
 
     public static Pageable buildPageable(int page, int size, String sort, String order) {
         if (!isValidField(sort)) {
