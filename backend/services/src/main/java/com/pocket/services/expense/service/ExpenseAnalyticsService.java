@@ -5,13 +5,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.pocket.services.common.security.dto.UserInfo;
-import com.pocket.services.expense.dto.internal.ExpenseAnalyticsByCategoryDto;
 import com.pocket.services.expense.dto.internal.Task;
+import com.pocket.services.expense.dto.response.ExpenseAnalyticsByCategoryDto;
 import com.pocket.services.expense.model.Expense;
 import com.pocket.services.expense.repository.ExpenseAnalyticsRepository;
 import com.pocket.services.expense.service.analytics.AnalyticsTaskManagerFactory;
@@ -26,6 +27,7 @@ public class ExpenseAnalyticsService {
     ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Autowired
+    @Qualifier("expenseTaskManagerFactory")
     AnalyticsTaskManagerFactory analyticsTaskManagerFactory;
 
     @Autowired

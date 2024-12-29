@@ -14,7 +14,7 @@ import com.pocket.services.expense.service.analytics.taskmanager.ExpenseDeleteTa
 import com.pocket.services.expense.service.analytics.taskmanager.ExpenseUpdateTaskManager;
 import com.pocket.services.expense.repository.ExpenseAnalyticsRepository;
 
-@Component
+@Component("expenseTaskManagerFactory")
 public class AnalyticsTaskManagerFactory {
 
     @Autowired

@@ -114,6 +114,9 @@ public class ExpenseService {
             expenseRepository.delete(expense);
             expenseAnalyticsService.handleExpense(Task.DELETE, Arrays.asList(expense));
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (ExpenseServiceException e) {
+            logger.error("Exception in delete expense by id", e);
+            throw e;
         } catch (Exception e) {
             logger.error("Exception in update expense by id", e);
             throw new UnhandledException(ErrorCode.EXPENSE_DELETE_EXCEPTION, e.getMessage());

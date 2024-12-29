@@ -1,4 +1,4 @@
-package com.pocket.services.expense.dto.internal;
+package com.pocket.services.expense.dto.response;
 
 import com.pocket.services.expense.model.Category;
 

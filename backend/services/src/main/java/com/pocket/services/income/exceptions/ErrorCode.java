@@ -11,5 +11,6 @@ public interface ErrorCode {
     String INCOME_NOT_FOUND = "INCOME_301";
 
     String INCOME_UPDATE_EXCEPTION = "INCOME_402";
+    String INCOME_DELETE_EXCEPTION = "INCOME_501";
 
 }
