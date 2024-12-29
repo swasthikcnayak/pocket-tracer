@@ -14,7 +14,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import ExpenseListItem from './../expense/ExpenseListItem';
 import IncomeListItem from './../income/IncomeListItem';
 
-import { expenseApiEndpoints, incomeApiEndpoints, reportApiEndpoints } from './../../API';
+import { expenseApiEndpoints, incomeApiEndpoints } from './../../API';
 import axios from './../../Axios';
 import { useTracked } from './../../Store';
 import { ExpenseCatgory } from '../expense/ExpenseCategory';
@@ -38,8 +38,11 @@ const Dashboard = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [recentExpense, setRecentExpense] = useState({ expense: [], expenseLoading: true });
   const [recentIncome, setRecentIncome] = useState({ income: [], incomeLoading: true });
-  const [monthlyExpenseSummary, setMonthlyExpenseSummary] = useState({});
-  const [monthlyIncomeSummary, setMonthlyIncomeSummary] = useState({});
+  const [prevMonthExpenseSummary, setPrevMonthExpenseSummary] = useState({});
+  const [currentMonthExpenseSummary, setCurrentMonthExpenseSummary] = useState({});
+
+  const [prevMonthIncomeSummary, setPrevMonthIncomeSummary] = useState({});
+  const [currentMonthIncomeSummary, setCurrentMonthIncomeSummary] = useState({});
   const [expenseCategories, setExpenseCategories] = useState([]);
 
   useEffect(() => {
@@ -52,14 +55,26 @@ const Dashboard = (props) => {
 
 
   const requestExpenseCategory = async () => {
-      setExpenseCategories(ExpenseCatgory);
+    setExpenseCategories(ExpenseCatgory);
   };
 
+
   const requestExpenseSummary = async () => {
-    await axios.get(reportApiEndpoints.monthlyExpenseSummary, {})
+    const now = new Date();
+    const previousMonth = now.getMonth() - 1;
+    const year = previousMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const month = (previousMonth + 12) % 12;
+    await axios.get(expenseApiEndpoints.analytics + `/${month + 1}/${year}`, {})
       .then(response => {
-        // console.log(response.data);
-        setMonthlyExpenseSummary(response.data.data)
+        setPrevMonthExpenseSummary({ expense: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+      await axios.get(expenseApiEndpoints.analytics + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
+      .then(response => {
+        setCurrentMonthExpenseSummary({ expense: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -67,10 +82,23 @@ const Dashboard = (props) => {
   };
 
   const requestIncomeSummary = async () => {
-    await axios.get(reportApiEndpoints.monthlyIncomeSummary, {})
+    const now = new Date();
+    const previousMonth = now.getMonth() - 1;
+    const year = previousMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const month = (previousMonth + 12) % 12;
+    await axios.get(incomeApiEndpoints.analytics + `/${month + 1}/${year}`, {})
       .then(response => {
-        // console.log(response.data);
-        setMonthlyIncomeSummary(response.data.data);
+        console.log(response)
+        setPrevMonthIncomeSummary({ income: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+      await axios.get(incomeApiEndpoints.analytics + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
+      .then(response => {
+        console.log(response)
+        setCurrentMonthIncomeSummary({ income: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -99,7 +127,6 @@ const Dashboard = (props) => {
   const requestIncome = async () => {
     await axios.get(incomeApiEndpoints.income + '?page=0&size=10', {})
       .then(response => {
-        // console.log(response.data);
         setRecentIncome({
           ...recentIncome,
           income: response.data.content,
@@ -116,12 +143,9 @@ const Dashboard = (props) => {
   };
 
   const submitExpense = (data) => {
-    console.log("Expense submit" +data);
     data.date = dayjs(data.date).format('YYYY-MM-DD HH:mm:ss');
-    console.log("Reques data", data)
     axios.post(expenseApiEndpoints.expense, JSON.stringify(data))
       .then(response => {
-        console.log("Resule response ", response);
         if (response.status === 201) {
           reset();
           setSubmitting(false);
@@ -213,15 +237,7 @@ const Dashboard = (props) => {
     if (data && data.length > 0) {
       return data.map((item, index) => {
         return <div key={index}>
-          <div className="color-link text-center">{item.total.toLocaleString()} </div>
-          <hr />
-        </div>
-      })
-    }
-    else if (typeof data === "object" && Object.values(data).length > 0) {
-      return Object.values(data).map((item, index) => {
-        return <div key={index}>
-          <div className="color-link text-center">{item.total.toLocaleString()} </div>
+          <div className="color-link text-center">{item.category}:{item.totalAmount.toLocaleString()} </div>
           <hr />
         </div>
       })
@@ -258,7 +274,7 @@ const Dashboard = (props) => {
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderSummary(monthlyExpenseSummary.expense_last_month)}
+                      {renderSummary(prevMonthExpenseSummary.expense)}
                     </div>
                   </div>
                 </div>
@@ -270,7 +286,7 @@ const Dashboard = (props) => {
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderSummary(monthlyExpenseSummary.expense_this_month)}
+                      {renderSummary(currentMonthExpenseSummary.expense)}
                     </div>
                   </div>
                 </div>
@@ -283,7 +299,7 @@ const Dashboard = (props) => {
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderSummary(monthlyIncomeSummary.income_last_month)}
+                      {renderSummary(prevMonthIncomeSummary.income)}
                     </div>
                   </div>
                 </div>
@@ -295,7 +311,7 @@ const Dashboard = (props) => {
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderSummary(monthlyIncomeSummary.income_this_month)}
+                      {renderSummary(currentMonthIncomeSummary.income)}
                     </div>
                   </div>
                 </div>

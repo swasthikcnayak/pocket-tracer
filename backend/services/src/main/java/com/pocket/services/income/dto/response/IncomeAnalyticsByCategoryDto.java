@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class IncomeAnalyticsByCategoryDto {
     private Category category;
-    private double totalmount;
+    private double totalAmount;
 
     IncomeAnalyticsByCategoryDto(String categoryString, double totalAmount) {
-        this.totalmount = totalAmount;
+        this.totalAmount = totalAmount;
         this.category = Category.valueOf(categoryString);
     }
 

@@ -1,6 +1,10 @@
 package com.pocket.services.income.service;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pocket.services.common.exceptions.UnhandledException;
 import com.pocket.services.common.security.dto.UserInfo;
 import com.pocket.services.common.user.model.User;
+import com.pocket.services.expense.dto.response.ExpenseDtoResponse;
+import com.pocket.services.expense.model.Expense;
 import com.pocket.services.income.dto.internal.Task;
 import com.pocket.services.income.exceptions.IncomeServiceException;
 import com.pocket.services.income.dto.mapper.IncomeMapper;
@@ -119,4 +125,23 @@ public class IncomeService {
             throw new UnhandledException(ErrorCode.INCOME_DELETE_EXCEPTION, e.getMessage());
         }
     }
+
+    public ResponseEntity<?> getIncomeByMonth(int month, int year, UserInfo userInfo) {
+        try {
+            YearMonth yearMonth = YearMonth.of(year, month);
+            LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+            LocalDateTime end = yearMonth.atEndOfMonth().atTime(23, 59, 59);
+            List<Income> income = incomeRepository
+                    .findIncomeByUserAndDateTimeBetween(new User(userInfo.getId()), start, end);
+             List<IncomeDtoResponse> response = new ArrayList<>();
+            for (Income e : income) {
+                response.add(incomeMapper.toExpenseDtoResponse(e));
+            }
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            logger.error("Exception in get income by month", e);
+            throw new UnhandledException(ErrorCode.INCOME_GET_BY_MONTH_EXCEPTION, e.getMessage());
+        }
+    }
+
 }

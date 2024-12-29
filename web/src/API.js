@@ -16,12 +16,12 @@ export const userApiEndpoints = {
 
 export const expenseApiEndpoints = {
   expense: '/v1/expense',
-  summary: '/api/v1/expense/summary',
+  analytics: '/v1/expense/analytics',
 };
 
 export const incomeApiEndpoints = {
   income: '/v1/income',
-  summary: '/api/v1/income/summary',
+  analytics: '/v1/income/analytics',
 };
 
 export const budgetApiEndpoints = {
@@ -29,8 +29,6 @@ export const budgetApiEndpoints = {
 }
 
 export const reportApiEndpoints = {
-  monthlyExpenseSummary: '/api/v1/report/expense/months/summary',
-  monthlyIncomeSummary: '/api/v1/report/income/months/summary',
   transaction: '/api/v1/report/transaction',
 };
 

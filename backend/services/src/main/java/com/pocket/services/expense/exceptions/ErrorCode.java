@@ -13,4 +13,6 @@ public interface ErrorCode {
     String EXPENSE_UPDATE_EXCEPTION = "EXPENSE_402";
     String EXPENSE_DELETE_EXCEPTION = "EXPENSE_403";
 
+    String EXPENSE_GET_BY_MONTH_EXCEPTION = "EXPENSE_501";
+
 }

@@ -1,6 +1,10 @@
 package com.pocket.services.expense.service;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +126,24 @@ public class ExpenseService {
             throw new UnhandledException(ErrorCode.EXPENSE_DELETE_EXCEPTION, e.getMessage());
         }
 
+    }
+
+    public ResponseEntity<?> getExpenseByMonth(int month, int year, UserInfo userInfo) {
+        try {
+            YearMonth yearMonth = YearMonth.of(year, month);
+            LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+            LocalDateTime end = yearMonth.atEndOfMonth().atTime(23, 59, 59);
+            List<Expense> expense = expenseRepository
+                    .findExpensesByUserAndDateTimeBetween(new User(userInfo.getId()), start, end);
+            List<ExpenseDtoResponse> response = new ArrayList<>();
+            for (Expense e : expense) {
+                response.add(expenseMapper.toExpenseDtoResponse(e));
+            }
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            logger.error("Exception in get expense by month", e);
+            throw new UnhandledException(ErrorCode.EXPENSE_GET_BY_MONTH_EXCEPTION, e.getMessage());
+        }
     }
 
 }

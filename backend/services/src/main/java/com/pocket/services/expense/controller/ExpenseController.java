@@ -45,6 +45,11 @@ public class ExpenseController {
         return expenseService.getExpense(userInfo, pageable);
     }
 
+    @GetMapping(value="/{month}/{year}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getExpenseByDate(@PathVariable int month, @PathVariable int year, @AuthenticationPrincipal UserInfo userInfo) {
+        return expenseService.getExpenseByMonth(month, year, userInfo);
+    }
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getExpenseById(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
         return expenseService.getExpenseById(id, userInfo);
