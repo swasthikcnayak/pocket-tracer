@@ -60,7 +60,8 @@ const Expense = (props) => {
     rowsPerPage: 10,
     currentPage: 1
   });
-  const [expenseSummary, setExpenseSummary] = useState({});
+  const [prevMonthExpenseSummary, setPrevMonthExpenseSummary] = useState({});
+  const [currentMonthExpenseSummary, setCurrentMonthExpenseSummary] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [expense, setExpense] = useState({ expenses: [], total: 0, fetching: true });
@@ -83,7 +84,6 @@ const Expense = (props) => {
     await axios.get(expenseApiEndpoints.expense + '?page=' + datatable.currentPage + '&size=' + datatable.rowsPerPage + '&sort=' + datatable.sortField + '&order=' + (datatable.sortOrder > 0 ? 'asc' : 'desc'), {})
       .then(response => {
         if (response.data) {
-          console.log(response.data, " is loggeed");
           setExpense({
             total: response.data.totalElements,
             expenses: response.data.content,
@@ -103,10 +103,21 @@ const Expense = (props) => {
   };
 
   const requestExpenseSummary = async () => {
-    await axios.get(expenseApiEndpoints.summary, {})
+    const now = new Date();
+    const previousMonth = now.getMonth() - 1;
+    const year = previousMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const month = (previousMonth + 12) % 12;
+    await axios.get(expenseApiEndpoints.analytics + `/${month + 1}/${year}`, {})
       .then(response => {
-        // console.log(response.data);
-        setExpenseSummary(response.data.data);
+        setPrevMonthExpenseSummary({ expense: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    await axios.get(expenseApiEndpoints.analytics + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
+      .then(response => {
+        setCurrentMonthExpenseSummary({ expense: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -196,7 +207,7 @@ const Expense = (props) => {
           });
         }
         else if (error.response.status === 422) {
-          
+
           let errors = Object.entries(error.response.data).map(([key, value]) => {
             return { name: key, message: value[0] }
           });
@@ -211,14 +222,14 @@ const Expense = (props) => {
     if (data && data.length > 0) {
       return data.map((item, index) => {
         return <div key={index}>
-          <div className="color-link text-center">{item.total.toLocaleString()} <span className="color-title"></span></div>
+          <div className="color-link text-center">{item.category}:{item.totalAmount.toLocaleString()} </div>
           <hr />
         </div>
       })
     }
     else {
       return <div>
-        <div className="text-center">No expense data found.</div>
+        <div className="text-center">No Expense data found.</div>
         <hr />
       </div>
     }
@@ -242,12 +253,12 @@ const Expense = (props) => {
             <div className="p-grid">
               <div className="p-col-6">
                 <div className="p-panel p-component">
-                  <div className="p-panel-titlebar"><span className="color-title text-bold">Expense This Month</span>
+                  <div className="p-panel-titlebar"><span className="color-title text-bold">Expense Last Month</span>
                   </div>
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderExpenseSummary(expenseSummary.expense_month)}
+                      {renderExpenseSummary(prevMonthExpenseSummary.expense)}
                     </div>
                   </div>
                 </div>
@@ -255,11 +266,11 @@ const Expense = (props) => {
 
               <div className="p-col-6">
                 <div className="p-panel p-component">
-                  <div className="p-panel-titlebar"><span className="color-title text-bold">Expense Today</span></div>
+                  <div className="p-panel-titlebar"><span className="color-title text-bold">Expense Current Month</span></div>
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderExpenseSummary(expenseSummary.expense_today)}
+                      {renderExpenseSummary(currentMonthExpenseSummary.expense)}
                     </div>
                   </div>
                 </div>

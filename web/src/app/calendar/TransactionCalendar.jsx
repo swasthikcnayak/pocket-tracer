@@ -10,6 +10,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
+import * as dayjs from 'dayjs';
 
 import ExpenseListItem from './../expense/ExpenseListItem';
 
@@ -115,30 +116,55 @@ const TransactionCalendar = (props) => {
   };
 
   const requestTransaction = () => {
-    axios.get(reportApiEndpoints.transaction, {})
+    const now = new Date();
+    axios.get(expenseApiEndpoints.expense + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
       .then(response => {
-        // console.log(response.data);
-        if (response.data.transactions.length > 0) {
+        console.log(response.data);
+        if (response.data.length > 0) {
+          const newEvents = response.data.map(item => {
+            return {
+              id: item.id,
+              title: `(-) ${item.amount}`,
+              date: dayjs(item.date).format('YYYY-MM-DD'),
+              type: 'EXPENSE',
+              backgroundColor: '#ffb102',
+              borderColor: '#ffb102'
+            }
+        })
+          setEvents({
+            ...events,
+            eventsLoading: true,
+            events: newEvents 
+          });
+          requestTransaction2(now)
+        } else {
+          setEvents({ ...events, eventsLoading: false });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    }
+    const requestTransaction2 = (now) => {
+      axios.get(incomeApiEndpoints.income + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
+      .then(response => {
+        console.log(response.data);
+        if (response.data.length > 0) {
+          const newEvent = [...events.events];
+          console.log("newEvent is ",events.events.length);
           setEvents({
             ...events,
             eventsLoading: false,
-            events: response.data.transactions.map(item => {
-              return item.transaction_type === 'Income' ?
-                {
-                  id: item.formatted_date,
-                  title: `(+) ${item.total} ${item.currency_name}`,
-                  date: item.formatted_date,
-                  type: item.transaction_type,
+            events: response.data.map(item => {
+              return {
+                  id: item.id,
+                  title: `(+) ${item.amount}`,
+                  date: dayjs(item.date).format('YYYY-MM-DD'),
+                  type: 'INCOME',
                   backgroundColor: '#55dda9',
                   borderColor: '#55dda9',
-                } : {
-                  id: item.formatted_date,
-                  title: `(-) ${item.total} ${item.currency_name}`,
-                  date: item.formatted_date,
-                  type: item.transaction_type,
-                  backgroundColor: '#ffb102',
-                  borderColor: '#ffb102'
-                }
+                } 
             })
           });
         } else {

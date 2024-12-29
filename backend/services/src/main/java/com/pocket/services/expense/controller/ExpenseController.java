@@ -38,21 +38,26 @@ public class ExpenseController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getExpense(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, 
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "date") String sort,
             @RequestParam(defaultValue = "desc") String order, @AuthenticationPrincipal UserInfo userInfo) {
-        Pageable pageable = PageUtils.buildPageable(Math.max(0,page-1), size, sort, order);
+        Pageable pageable = PageUtils.buildPageable(Math.max(0, page - 1), size, sort, order);
         return expenseService.getExpense(userInfo, pageable);
+    }
+
+    @GetMapping(value="/{month}/{year}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getExpenseByDate(@PathVariable int month, @PathVariable int year, @AuthenticationPrincipal UserInfo userInfo) {
+        return expenseService.getExpenseByMonth(month, year, userInfo);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getExpenseById(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
         return expenseService.getExpenseById(id, userInfo);
     }
-    
+
     @PatchMapping(value = "/{id}")
     public ResponseEntity<?> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseDto expenseDto,
-            @AuthenticationPrincipal UserInfo userInfo){
+            @AuthenticationPrincipal UserInfo userInfo) {
         return expenseService.updateExpense(id, expenseDto, userInfo);
     }
 

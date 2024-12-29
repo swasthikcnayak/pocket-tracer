@@ -7,10 +7,11 @@ public interface ErrorCode {
 
     String INCOME_INVALID_PAGE = "INCOME_201";
     String INCOME_GET_EXCEPTION = "INCOME_202";
-    
+
     String INCOME_NOT_FOUND = "INCOME_301";
-    
 
     String INCOME_UPDATE_EXCEPTION = "INCOME_402";
-    
+    String INCOME_DELETE_EXCEPTION = "INCOME_501";
+
+    String INCOME_GET_BY_MONTH_EXCEPTION = "INCOME_601";
 }

@@ -61,4 +61,10 @@ public class IncomeController {
             @AuthenticationPrincipal UserInfo userInfo) throws Exception {
         return incomeService.deleteIncome(id, userInfo);
     }
+
+    @GetMapping(value="/{month}/{year}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIncomeByDate(@PathVariable int month, @PathVariable int year, @AuthenticationPrincipal UserInfo userInfo) {
+        return incomeService.getIncomeByMonth(month, year, userInfo);
+    }
+
 }

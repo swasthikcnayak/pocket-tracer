@@ -23,7 +23,7 @@ import jakarta.persistence.GenerationType;
 @Setter
 @Entity
 @Table(name = "income", indexes = {
-        @Index(name = "idx_user", columnList = "user_id"),
+        @Index(name = "income_user_id", columnList = "user_id"),
 })
 public class Income {
 

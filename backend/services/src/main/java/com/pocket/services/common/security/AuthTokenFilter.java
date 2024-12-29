@@ -41,7 +41,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 if (user instanceof UserInfo) {
                     userId = ((UserInfo) user).getId();
                 }
-                UserInfo userInfo = new UserInfo(userId, user.getUsername(), null , null);
+                UserInfo userInfo = new UserInfo(userId, user.getUsername(), null, null);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userInfo, null, user.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

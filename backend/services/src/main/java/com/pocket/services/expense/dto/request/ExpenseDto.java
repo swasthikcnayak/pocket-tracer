@@ -15,7 +15,7 @@ import lombok.Data;
 public class ExpenseDto {
 
     @NotNull(message = "amount cannot be null")
-    @DecimalMin(value = "0.01", message="amount must be atleast 0.01")
+    @DecimalMin(value = "0.01", message = "amount must be atleast 0.01")
     private double amount;
 
     @NotNull(message = "title cannot be null")

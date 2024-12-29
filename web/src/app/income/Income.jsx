@@ -60,7 +60,9 @@ const Income = (props) => {
     currentPage: 1
   });
 
-  const [incomeSummary, setIncomeSummary] = useState({});
+    const [prevMonthIncomeSummary, setPrevMonthIncomeSummary] = useState({});
+    const [currentMonthIncomeSummary, setCurrentMonthIncomeSummary] = useState({});
+
   const [submitting, setSubmitting] = useState(false);
   const [incomeCategories, setIncomeCategories] = useState([]);
   const [income, setIncome] = useState({ incomes: [], total: 0, fetching: true });
@@ -104,18 +106,31 @@ const Income = (props) => {
   };
 
   const requestIncomeSummary = async () => {
-    await axios.get(incomeApiEndpoints.summary, {})
+    const now = new Date();
+    const previousMonth = now.getMonth() - 1;
+    const year = previousMonth < 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const month = (previousMonth + 12) % 12;
+    await axios.get(incomeApiEndpoints.analytics + `/${month + 1}/${year}`, {})
       .then(response => {
-        // console.log(response.data);
-        setIncomeSummary(response.data.data);
+        console.log(response)
+        setPrevMonthIncomeSummary({ income: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+      await axios.get(incomeApiEndpoints.analytics + `/${now.getMonth() + 1}/${now.getFullYear()}`, {})
+      .then(response => {
+        console.log(response)
+        setCurrentMonthIncomeSummary({ income: response.data });
       })
       .catch(error => {
         console.log(error);
       });
   };
 
+
   const deleteIncome = (data) => {
-    // console.log(data);
     StyledSwal.fire({
       title: 'Are you sure?',
       text: `Confirm to delete income on ${data.title}.`,
@@ -216,14 +231,14 @@ const Income = (props) => {
     if (data && data.length > 0) {
       return data.map((item, index) => {
         return <div key={index}>
-          <div className="color-link text-center">{item.total.toLocaleString()} <span className="color-title">{item.currency_code + '.'}</span></div>
+          <div className="color-link text-center">{item.category} : {item.totalAmount.toLocaleString()} </div>
           <hr />
         </div>
       })
     }
     else {
       return <div>
-        <div className="text-center">No income data found.</div>
+        <div className="text-center">No Income data found.</div>
         <hr />
       </div>
     }
@@ -248,12 +263,12 @@ const Income = (props) => {
             <div className="p-grid">
               <div className="p-col-6">
                 <div className="p-panel p-component">
-                  <div className="p-panel-titlebar"><span className="color-title text-bold">Income This Month</span>
+                  <div className="p-panel-titlebar"><span className="color-title text-bold">Income Previous Month</span>
                   </div>
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderIncomeSummary(incomeSummary.income_month)}
+                      {renderIncomeSummary(prevMonthIncomeSummary.income)}
                     </div>
                   </div>
                 </div>
@@ -261,11 +276,11 @@ const Income = (props) => {
 
               <div className="p-col-6">
                 <div className="p-panel p-component">
-                  <div className="p-panel-titlebar"><span className="color-title text-bold">Income Today</span></div>
+                  <div className="p-panel-titlebar"><span className="color-title text-bold">Income This Month</span></div>
                   <div className="p-panel-content-wrapper p-panel-content-wrapper-expanded" id="pr_id_1_content"
                     aria-labelledby="pr_id_1_label" aria-hidden="false">
                     <div className="p-panel-content">
-                      {renderIncomeSummary(incomeSummary.income_today)}
+                      {renderIncomeSummary(currentMonthIncomeSummary.income)}
                     </div>
                   </div>
                 </div>

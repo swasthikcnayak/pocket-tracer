@@ -20,17 +20,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.GenerationType;
 
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users", indexes =  {
-    @Index(name = "idx_email", columnList = "email"),
+@Table(name = "users", indexes = {
+        @Index(name = "user_email", columnList = "email"),
+        @Index(name = "user_id", columnList = "id")
 })
-public class User implements UserDetails{
-    
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = -1L;
@@ -40,12 +39,12 @@ public class User implements UserDetails{
 
     @Column(name = "password", nullable = false)
     private String password;
-    
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role = Role.ROLE_USER;
 
-    public User(Long id){
+    public User(Long id) {
         this.id = id;
     }
 
@@ -54,6 +53,7 @@ public class User implements UserDetails{
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.toString());
         return Collections.singletonList(authority);
     }
+
     @Override
     public String getUsername() {
         return email;

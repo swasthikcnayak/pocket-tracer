@@ -22,8 +22,8 @@ import jakarta.persistence.GenerationType;
 @Getter
 @Setter
 @Entity
-@Table(name = "expense", indexes =  {
-    @Index(name = "idx_user", columnList = "user_id"),
+@Table(name = "expense", indexes = {
+        @Index(name = "expense_user_id", columnList = "user_id"),
 })
 public class Expense {
 

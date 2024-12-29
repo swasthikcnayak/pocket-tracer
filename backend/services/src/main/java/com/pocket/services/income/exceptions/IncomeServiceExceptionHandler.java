@@ -10,15 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-
 @ControllerAdvice
 public class IncomeServiceExceptionHandler {
-    
+
     private final Logger logger = LoggerFactory.getLogger(IncomeServiceExceptionHandler.class);
 
     @ExceptionHandler(IncomeServiceException.class)
     public ResponseEntity<Map<String, String>> handleIncomeServiceException(IncomeServiceException ex) {
-        logger.error("income service exception "+ex.errorCode, ex);
+        logger.error("income service exception " + ex.errorCode, ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());
         errorMessages.put("code", ex.errorCode);

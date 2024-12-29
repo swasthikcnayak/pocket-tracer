@@ -10,15 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-
 @ControllerAdvice
 public class ExpenseServiceExceptionHandler {
-    
+
     private final Logger logger = LoggerFactory.getLogger(ExpenseServiceExceptionHandler.class);
 
     @ExceptionHandler(ExpenseServiceException.class)
     public ResponseEntity<Map<String, String>> handleExpenseServiceException(ExpenseServiceException ex) {
-        logger.error("expense service exception "+ex.errorCode, ex);
+        logger.error("expense service exception " + ex.errorCode, ex);
         Map<String, String> errorMessages = new HashMap<>();
         errorMessages.put("error", ex.getMessage());
         errorMessages.put("code", ex.errorCode);

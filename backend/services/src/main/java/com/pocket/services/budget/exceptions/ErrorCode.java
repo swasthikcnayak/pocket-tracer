@@ -11,6 +11,5 @@ public interface ErrorCode {
     String BUDGET_NOT_FOUND = "BUDGET_301";
 
     String BUDGET_UPDATE_EXCEPTION = "BUDGET_402";
-   
-    
+
 }
